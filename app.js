@@ -13,7 +13,7 @@ app.use(express.json()); // parse json body
 app.use(express.urlencoded({ extended: true })); // parse url encoded to json
 
 app.get('/', (req, res, next) => {
-  res.send('HOME');
+  res.send({ message: 'SejutaCita technical test' });
 });
 
 app.use('/user', UserRoute);

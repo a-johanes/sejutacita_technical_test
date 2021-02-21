@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../Models/User.model');
 const mongoose = require('mongoose');
 const mongodb = require('mongodb');
+const { createAccessToken, verifyAccessToken } = require('../Utils/jwt');
 
 getErrors = (error) => {
   if (error.errors['username']) {
@@ -13,6 +14,10 @@ getErrors = (error) => {
     return 'password';
   }
 };
+
+router.get('/', verifyAccessToken, async (req, res, next) => {
+  res.send('info route');
+});
 
 router.post('/register', async (req, res, next) => {
   try {
@@ -47,7 +52,8 @@ router.post('/login', async (req, res, next) => {
     if (!(await user.isPasswordValid(req.body.password)))
       throw createError.Unauthorized('Username/Password is not valid');
 
-    res.send(user);
+    const accessToken = await createAccessToken(user.id);
+    res.send({ accessToken });
   } catch (error) {
     console.log(error.message);
 
