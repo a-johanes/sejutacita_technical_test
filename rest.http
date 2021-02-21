@@ -8,7 +8,12 @@ POST http://localhost:3000/auth/login
 
 ### Register Route
 POST http://localhost:3000/auth/register
+Content-Type: application/json
 
+{
+    "username" : "user_123",
+    "password": "password123"
+}
 
 ### Refresh token Route
 POST http://localhost:3000/auth/refresh-token
