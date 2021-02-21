@@ -44,13 +44,15 @@ router.post('/login', async (req, res, next) => {
     const user = await User.findOne({ username: req.body.username });
     if (!user) throw createError.NotFound('User not registered');
 
+    if (!(await user.isPasswordValid(req.body.password)))
+      throw createError.Unauthorized('Username/Password is not valid');
+
     res.send(user);
   } catch (error) {
     console.log(error.message);
 
     if (error instanceof mongoose.Error.ValidationError) {
-      let errorKeyString = getErrors(error);
-      if (errorKeyString) return next(createError.UnprocessableEntity(error.errors[errorKeyString].message));
+      return next(createError.BadRequest('Invalid Username/Password'));
     }
 
     next(error);
