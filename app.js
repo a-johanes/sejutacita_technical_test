@@ -5,7 +5,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 require('./Utils/init_mongodb');
 
-const AuthRoute = require('./Routes/Auth.route');
+const UserRoute = require('./Routes/User.route');
 
 const app = express();
 app.use(morgan('dev'));
@@ -16,7 +16,7 @@ app.get('/', (req, res, next) => {
   res.send('HOME');
 });
 
-app.use('/auth', AuthRoute);
+app.use('/user', UserRoute);
 
 app.use(async (req, res, next) => {
   next(createError.NotFound());
