@@ -1,4 +1,4 @@
-# SejutaCita Techinal Test
+# SejutaCita Technical Test
 
 ## Requirements
 
