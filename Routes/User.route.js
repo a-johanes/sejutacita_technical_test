@@ -20,6 +20,12 @@ router.post('/register', async (req, res, next) => {
   } catch (error) {
     console.log(error.message);
 
+    if (error.code == 11000) {
+      // dulicate key error
+      const username = error.keyValue[Object.keys(error.keyValue)[0]];
+      return next(createError.Conflict(`${username} is already been registered`));
+    }
+
     let errorKeyString = getErrors(error);
 
     if (errorKeyString) return next(createError.UnprocessableEntity(error.errors[errorKeyString].message));
