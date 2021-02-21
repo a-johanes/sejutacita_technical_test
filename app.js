@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-
+require('./Utils/init_mongodb');
 const app = express();
 
 app.get('/', (req, res, next) => {
