@@ -4,7 +4,13 @@ GET http://localhost:3000/
 
 ### Login Route
 POST http://localhost:3000/user/login
+Content-Type: application/json
 
+{
+    "username" : "user123",
+    "password": "password",
+    "isAdmin": true
+}
 
 ### Register Route
 POST http://localhost:3000/user/register
