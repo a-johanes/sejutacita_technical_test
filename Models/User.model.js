@@ -32,15 +32,15 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  refreshToken: String,
 });
 
 UserSchema.pre('save', async function (next) {
   try {
     // only hash if new
     if (this.isNew) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(this.password, salt);
-      this.password = hashedPassword;
+      this.password = await bcrypt.hash(this.password, 10);
+      this.refreshToken = await bcrypt.hash(this.refreshToken, 10);
     }
     next();
   } catch (error) {
@@ -51,6 +51,14 @@ UserSchema.pre('save', async function (next) {
 UserSchema.methods.isPasswordValid = async function (password) {
   try {
     return await bcrypt.compare(password, this.password);
+  } catch (error) {
+    throw error;
+  }
+};
+
+UserSchema.methods.isRefreshTokenValid = async function (refreshToken) {
+  try {
+    return await bcrypt.compare(refreshToken, this.refreshToken);
   } catch (error) {
     throw error;
   }

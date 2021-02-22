@@ -16,7 +16,7 @@ app.get('/', (req, res, next) => {
   res.send({ message: 'SejutaCita technical test' });
 });
 
-app.use('/user', UserRoute);
+app.use('/users', UserRoute);
 
 app.use(async (req, res, next) => {
   next(createError.NotFound());
