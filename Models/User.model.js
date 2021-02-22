@@ -68,7 +68,7 @@ UserSchema.methods.isRefreshTokenValid = async function (refreshToken) {
   }
 };
 
-UserSchema.static.getError = function (error) {
+UserSchema.statics.getError = function (error) {
   if (error.errors['username']) {
     return 'username';
   }
