@@ -25,7 +25,7 @@ POST {{baseUrl}}/users/auth/register
 Content-Type: application/json
 
 {
-    "username" : "user123",
+    "username" : "user_",
     "password": "password"
     
 }
@@ -69,3 +69,38 @@ Authorization: Bearer {{accessToken}}
 # @name userInfoID
 GET {{baseUrl}}/users/6033e6d878211f0052c85d98
 Authorization: Bearer {{accessToken}}
+
+### 
+
+# @name createUser
+POST {{baseUrl}}/users
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "username" : "user_123",
+    "password": "password"
+    
+}
+
+### 
+
+# @name updateUser
+PUT {{baseUrl}}/users
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "username" : "admin"
+}
+
+### 
+
+# @name updateUserID
+PUT {{baseUrl}}/users/603400751f9551b6966e40c1
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "isAdmin": "true"
+}

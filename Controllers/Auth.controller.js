@@ -10,6 +10,7 @@ register = async (req, res, next) => {
     delete req.body['isAdmin'];
     const newAuth = await new User(req.body).save();
 
+    res.statusCode = 201;
     res.send({ username: newAuth.username, password: newAuth.password });
   } catch (error) {
     console.log(error.message);

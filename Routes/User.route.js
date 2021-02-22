@@ -46,4 +46,100 @@ router.get('/:id', verifyAccessToken, verifyAdmin, async (req, res, next) => {
   }
 });
 
+router.post('/', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // create new user
+  // admin only
+  try {
+    const newAuth = await new User(req.body).save();
+
+    res.statusCode = 201;
+    res.send(newAuth);
+  } catch (error) {
+    console.log(error.message);
+
+    if (error instanceof mongodb.MongoError) {
+      if (error.code == 11000) {
+        // dulicate key error
+        const username = error.keyValue[Object.keys(error.keyValue)[0]];
+        return next(createError.Conflict(`${username} is already been registered`));
+      }
+    }
+
+    if (error instanceof mongoose.Error.ValidationError) {
+      let errorKeyString = User.getError(error);
+      if (errorKeyString) return next(createError.UnprocessableEntity(error.errors[errorKeyString].message));
+    }
+    next(error);
+  }
+});
+
+router.put('/', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // update current user info
+  // admin only
+  try {
+    const user = res.locals.user;
+    const userKeyList = Object.keys(User.schema.obj);
+    const updateUserKeyList = Object.keys(req.body);
+    if (!updateUserKeyList.some((key) => userKeyList.indexOf(key) >= 0)) return res.sendStatus(204);
+    if (req.body.isAdmin) {
+      req.body.isAdmin = Boolean(req.body.isAdmin);
+    }
+    await User.validate(req.body, updateUserKeyList);
+    const newUser = await User.findOneAndUpdate({ username: user.username }, req.body, { new: true });
+    await newUser.save();
+    res.send(newUser);
+  } catch (error) {
+    console.log(error.message);
+    if (error instanceof mongodb.MongoError) {
+      if (error.code == 11000) {
+        // dulicate key error
+        const username = error.keyValue[Object.keys(error.keyValue)[0]];
+        return next(createError.Conflict(`${username} is already been registered`));
+      }
+    }
+
+    if (error instanceof mongoose.Error.ValidationError) {
+      let errorKeyString = User.getError(error);
+      if (errorKeyString) return next(createError.UnprocessableEntity(error.errors[errorKeyString].message));
+    }
+    next(error);
+  }
+});
+
+router.put('/:id', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // update specific user info
+  // admin only
+  try {
+    const userKeyList = Object.keys(User.schema.obj);
+    const updateUserKeyList = Object.keys(req.body);
+    if (!updateUserKeyList.some((key) => userKeyList.indexOf(key) >= 0)) return res.sendStatus(204);
+    if (req.body.isAdmin) {
+      req.body.isAdmin = Boolean(req.body.isAdmin);
+    }
+    await User.validate(req.body, updateUserKeyList);
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!user) throw createError.NotFound();
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    console.log(error.message);
+    if (error instanceof mongoose.Error.CastError) {
+      return next(createError.BadRequest());
+    }
+    if (error instanceof mongodb.MongoError) {
+      if (error.code == 11000) {
+        // dulicate key error
+        const username = error.keyValue[Object.keys(error.keyValue)[0]];
+        return next(createError.Conflict(`${username} is already been registered`));
+      }
+    }
+    if (error instanceof mongoose.Error.ValidationError) {
+      console.log(error.errors['isAdmin'].message);
+      let errorKeyString = User.getError(error);
+      if (errorKeyString) return next(createError.UnprocessableEntity(error.errors[errorKeyString].message));
+    }
+    next(error);
+  }
+});
+
 module.exports = router;
