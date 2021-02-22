@@ -40,6 +40,8 @@ UserSchema.pre('save', async function (next) {
     // only hash if new
     if (this.isNew) {
       this.password = await bcrypt.hash(this.password, 10);
+    }
+    if (this.refreshToken && !this.refreshToken.startsWith('$2a')) {
       this.refreshToken = await bcrypt.hash(this.refreshToken, 10);
     }
     next();
@@ -50,7 +52,8 @@ UserSchema.pre('save', async function (next) {
 
 UserSchema.methods.isPasswordValid = async function (password) {
   try {
-    return await bcrypt.compare(password, this.password);
+    const encrypted = this.password ? this.password : '';
+    return await bcrypt.compare(password, encrypted);
   } catch (error) {
     throw error;
   }
@@ -58,7 +61,8 @@ UserSchema.methods.isPasswordValid = async function (password) {
 
 UserSchema.methods.isRefreshTokenValid = async function (refreshToken) {
   try {
-    return await bcrypt.compare(refreshToken, this.refreshToken);
+    const encrypted = this.refreshToken ? this.refreshToken : '';
+    return await bcrypt.compare(refreshToken, encrypted);
   } catch (error) {
     throw error;
   }

@@ -8,7 +8,7 @@ createAccessToken = (userId, refreshToken) => {
     const payload = {};
     const secret = process.env.ACCESS_TOKEN_SECRET + refreshToken;
     const options = {
-      expiresIn: '15s',
+      expiresIn: '5m',
       issuer: 'test.com',
       audience: userId,
     };
@@ -58,7 +58,7 @@ createRefreshToken = (userId) => {
     const payload = {};
     const secret = process.env.REFRESH_TOKEN_SECRET;
     const options = {
-      expiresIn: '1m',
+      expiresIn: '1y',
       issuer: 'test.com',
       audience: userId,
     };
@@ -80,7 +80,7 @@ verifyRefreshToken = (refreshToken) => {
       const userId = payload.aud;
       const user = await User.findById(userId);
       if (!user) return reject(createError.Unauthorized());
-      if (!user.isRefreshTokenValid(refreshToken)) return reject(createError.Unauthorized());
+      if (!(await user.isRefreshTokenValid(refreshToken))) return reject(createError.Unauthorized());
       resolve(user);
     });
   });

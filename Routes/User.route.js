@@ -56,9 +56,10 @@ router.post('/login', async (req, res, next) => {
       throw createError.Unauthorized('Username/Password is not valid');
 
     const refreshToken = await createRefreshToken(user.id);
-    const accessToken = await createAccessToken(user.id, refreshToken);
     user.refreshToken = refreshToken;
     await user.save();
+
+    const accessToken = await createAccessToken(user.id, user.refreshToken);
 
     res.send({ accessToken, refreshToken });
   } catch (error) {
@@ -78,17 +79,25 @@ router.post('/refresh-token', async (req, res, next) => {
     if (!refreshToken) throw createError.BadRequest();
     const user = await verifyRefreshToken(refreshToken);
 
-    const accessToken = await createAccessToken(user.id, refreshToken);
-    user.token = { accessToken, refreshToken };
-    await user.save();
-    res.send(user.token);
+    const accessToken = await createAccessToken(user.id, user.refreshToken);
+
+    res.send({ accessToken });
   } catch (error) {
     next(error);
   }
 });
 
 router.delete('/logout', async (req, res, next) => {
-  res.send('logout route');
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) throw createError.BadRequest();
+    const user = await verifyRefreshToken(refreshToken);
+    user.refreshToken = undefined;
+    await user.save();
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = router;
