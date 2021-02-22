@@ -6,6 +6,7 @@ require('dotenv').config();
 require('./Utils/init_mongodb');
 
 const UserRoute = require('./Routes/User.route');
+const AuthRoute = require('./Routes/Auth.route');
 
 const app = express();
 app.use(morgan('dev'));
@@ -16,6 +17,7 @@ app.get('/', (req, res, next) => {
   res.send({ message: 'SejutaCita technical test' });
 });
 
+app.use('/users/auth', AuthRoute);
 app.use('/users', UserRoute);
 
 app.use(async (req, res, next) => {

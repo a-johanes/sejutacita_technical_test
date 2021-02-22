@@ -4,10 +4,10 @@ GET http://localhost:3000/
 
 ### Info Route
 GET http://localhost:3000/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMDkwNDUsImV4cCI6MTYxNDAwOTM0NSwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.Lq8NMM7rvL4nylmJ47LuTPEbtonNnpPlKGJj2kqSOC4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTYxNDAxMjIwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.n-aItFYaPTm436eOHBrFuLWI-WepkMzdMNScZd-IGtE
 
 ### Login Route 
-POST http://localhost:3000/users/login
+POST http://localhost:3000/users/auth/login
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Register Route
-POST http://localhost:3000/users/register
+POST http://localhost:3000/users/auth/register
 Content-Type: application/json
 
 {
@@ -26,17 +26,17 @@ Content-Type: application/json
 }
 
 ### Refresh token Route
-POST http://localhost:3000/users/refresh-token
+POST http://localhost:3000/users/auth/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMDkwNDUsImV4cCI6MTY0NTU2NjY0NSwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.5uuayBnsGj1w6CxZXOkeGSYzlPoU3p3ROuGRo_svgJA"
+    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTY0NTU2OTUwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.QJ8EJ-r-oNUOaxo20b1R6F8ijjL36Vp79EU0fg6qzNM"
 }
 
 ### Logout Route
-DELETE http://localhost:3000/users/logout
+DELETE http://localhost:3000/users/auth/logout
 Content-Type: application/json
 
 {
-    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMDkwNDUsImV4cCI6MTY0NTU2NjY0NSwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.5uuayBnsGj1w6CxZXOkeGSYzlPoU3p3ROuGRo_svgJA"
+    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTY0NTU2OTUwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.QJ8EJ-r-oNUOaxo20b1R6F8ijjL36Vp79EU0fg6qzNM"
 }
