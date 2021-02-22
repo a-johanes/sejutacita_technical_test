@@ -1,42 +1,65 @@
+@baseUrl = http://localhost:3000
+
 ### Home route
-GET http://localhost:3000/
+GET {{baseUrl}}
 
+###
 
-### Info Route
-GET http://localhost:3000/users/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTYxNDAxMjIwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.n-aItFYaPTm436eOHBrFuLWI-WepkMzdMNScZd-IGtE
-
-### Login Route 
-POST http://localhost:3000/users/auth/login
+# @name login
+POST {{baseUrl}}/users/auth/login
 Content-Type: application/json
 
 {
-    "username" : "user_123",
+    "username" : "user123",
     "password": "password"
 }
 
-### Register Route
-POST http://localhost:3000/users/auth/register
+###
+
+@refreshToken = {{login.response.body.$.refreshToken}}
+@accessToken = {{login.response.body.$.accessToken}}
+
+
+# @name register
+POST {{baseUrl}}/users/auth/register
 Content-Type: application/json
 
 {
-    "username" : "user_123",
+    "username" : "user123",
     "password": "password"
     
 }
 
-### Refresh token Route
-POST http://localhost:3000/users/auth/refresh-token
+###
+
+# @name refresh
+POST {{baseUrl}}/users/auth/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTY0NTU2OTUwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.QJ8EJ-r-oNUOaxo20b1R6F8ijjL36Vp79EU0fg6qzNM"
+    "refreshToken" : "{{refreshToken}}"
 }
 
-### Logout Route
-DELETE http://localhost:3000/users/auth/logout
+###
+@accessToken = {{refresh.response.body.$.accessToken}}
+
+
+# @name logout
+DELETE {{baseUrl}}/users/auth/logout
 Content-Type: application/json
 
 {
-    "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MTQwMTE5MDgsImV4cCI6MTY0NTU2OTUwOCwiYXVkIjoiNjAzM2QwZjE4MDI5NzQ3NWIxMDc5YjU3IiwiaXNzIjoidGVzdC5jb20ifQ.QJ8EJ-r-oNUOaxo20b1R6F8ijjL36Vp79EU0fg6qzNM"
+    "refreshToken" : "{{refreshToken}}"
 }
+
+###
+
+# @name userInfo
+GET {{baseUrl}}/users/
+Authorization: Bearer {{accessToken}}
+
+###
+
+# @name userInfoAll
+GET {{baseUrl}}/users/all/
+Authorization: Bearer {{accessToken}}
