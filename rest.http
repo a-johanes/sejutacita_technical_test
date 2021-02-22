@@ -10,7 +10,7 @@ POST {{baseUrl}}/users/auth/login
 Content-Type: application/json
 
 {
-    "username" : "user123",
+    "username" : "admin",
     "password": "password"
 }
 
@@ -62,4 +62,10 @@ Authorization: Bearer {{accessToken}}
 
 # @name userInfoAll
 GET {{baseUrl}}/users/all/
+Authorization: Bearer {{accessToken}}
+
+### 
+
+# @name userInfoID
+GET {{baseUrl}}/users/6033e6d878211f0052c85d98
 Authorization: Bearer {{accessToken}}
