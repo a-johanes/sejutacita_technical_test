@@ -142,4 +142,35 @@ router.put('/:id', verifyAccessToken, verifyAdmin, async (req, res, next) => {
   }
 });
 
+router.delete('/', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // remove current user
+  // admin only
+  const user = res.locals.user;
+  const deletedUser = await User.findByIdAndRemove(user.id);
+  if (!deletedUser) return next(createError.NotFound());
+  res.send(deletedUser);
+});
+
+router.delete('/all/', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // remove all user
+  // admin only
+  const result = await User.deleteMany();
+  res.send({ count: result.deletedCount });
+});
+
+router.delete('/:id', verifyAccessToken, verifyAdmin, async (req, res, next) => {
+  // remove specific user
+  // admin only
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    if (!user) throw createError.NotFound();
+    res.send(user);
+  } catch (error) {
+    if (error instanceof mongoose.Error.CastError) {
+      return next(createError.BadRequest());
+    }
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -25,7 +25,7 @@ POST {{baseUrl}}/users/auth/register
 Content-Type: application/json
 
 {
-    "username" : "user_",
+    "username" : "admin",
     "password": "password"
     
 }
@@ -78,7 +78,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "username" : "user_123",
+    "username" : "user123",
     "password": "password"
     
 }
@@ -102,5 +102,23 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "isAdmin": "true"
+    "isAdmin": 0
 }
+
+### 
+
+# @name deleteuser
+DELETE {{baseUrl}}/users/
+Authorization: Bearer {{accessToken}}
+
+### 
+
+# @name deleteuserAll
+DELETE {{baseUrl}}/users/all/
+Authorization: Bearer {{accessToken}}
+
+### 
+
+# @name deleteuserID
+DELETE {{baseUrl}}/users/603400751f9551b6966e40c1
+Authorization: Bearer {{accessToken}}
