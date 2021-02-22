@@ -37,11 +37,11 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', async function (next) {
   try {
-    // only hash if new
-    if (this.isNew) {
+    // only hash if not hashed
+    if (this.password && !this.password.startsWith('$2b')) {
       this.password = await bcrypt.hash(this.password, 10);
     }
-    if (this.refreshToken && !this.refreshToken.startsWith('$2a')) {
+    if (this.refreshToken && !this.refreshToken.startsWith('$2b')) {
       this.refreshToken = await bcrypt.hash(this.refreshToken, 10);
     }
     next();
