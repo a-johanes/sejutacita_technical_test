@@ -36,6 +36,7 @@ verifyAccessToken = async (req, res, next) => {
   const token = bearerToken[1];
 
   const decodedJWT = jwt.decode(token);
+  if (!decodedJWT) return next(createError.Unauthorized());
   const userId = decodedJWT.aud;
   const user = await User.findById(userId);
   if (!user || !user.refreshToken) return next(createError.Unauthorized());
@@ -47,8 +48,7 @@ verifyAccessToken = async (req, res, next) => {
       const message = error.name === 'JsonWebTokenError' ? 'Unauthorized' : error.message;
       return next(createError.Unauthorized(message));
     }
-    req.payload = payload;
-    req.user = user;
+    res.locals.user = user;
     next();
   });
 };
