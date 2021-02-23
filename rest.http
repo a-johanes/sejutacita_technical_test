@@ -107,18 +107,18 @@ Content-Type: application/json
 
 ### 
 
-# @name deleteuser
+# @name deleteUser
 DELETE {{baseUrl}}/users/
 Authorization: Bearer {{accessToken}}
 
 ### 
 
-# @name deleteuserAll
+# @name deleteUserAll
 DELETE {{baseUrl}}/users/all/
 Authorization: Bearer {{accessToken}}
 
 ### 
 
-# @name deleteuserID
+# @name deleteUserID
 DELETE {{baseUrl}}/users/603400751f9551b6966e40c1
 Authorization: Bearer {{accessToken}}
