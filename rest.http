@@ -1,4 +1,5 @@
-@baseUrl = http://localhost:3000
+# @baseUrl = http://192.168.1.105:32033
+@baseUrl = http://192.168.1.105:32148
 
 ### Home route
 GET {{baseUrl}}
@@ -67,7 +68,7 @@ Authorization: Bearer {{accessToken}}
 ### 
 
 # @name userInfoID
-GET {{baseUrl}}/users/60340db80aee1f156d1def07
+GET {{baseUrl}}/users/6035092fd21b790020d3a72d
 Authorization: Bearer {{accessToken}}
 
 ### 
@@ -80,7 +81,7 @@ Content-Type: application/json
 {
     "username" : "user_123",
     "password": "password",
-    "isAdmin": true
+    "isAdmin": false
     
 }
 
@@ -98,12 +99,12 @@ Content-Type: application/json
 ### 
 
 # @name updateUserID
-PUT {{baseUrl}}/users/60340db80aee1f156d1def07
+PUT {{baseUrl}}/users/6035092fd21b790020d3a72d
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "username": "user123"
+    "password": "password"
 }
 
 ### 
@@ -121,5 +122,5 @@ Authorization: Bearer {{accessToken}}
 ### 
 
 # @name deleteUserID
-DELETE {{baseUrl}}/users/60340db80aee1f156d1def07
+DELETE {{baseUrl}}/users/6034f3d8ec55b6153f4af303
 Authorization: Bearer {{accessToken}}
