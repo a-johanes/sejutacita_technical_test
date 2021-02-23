@@ -67,7 +67,7 @@ Authorization: Bearer {{accessToken}}
 ### 
 
 # @name userInfoID
-GET {{baseUrl}}/users/6033e6d878211f0052c85d98
+GET {{baseUrl}}/users/60340db80aee1f156d1def07
 Authorization: Bearer {{accessToken}}
 
 ### 
@@ -78,8 +78,9 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "username" : "user123",
-    "password": "password"
+    "username" : "user_123",
+    "password": "password",
+    "isAdmin": true
     
 }
 
@@ -97,12 +98,12 @@ Content-Type: application/json
 ### 
 
 # @name updateUserID
-PUT {{baseUrl}}/users/603400751f9551b6966e40c1
+PUT {{baseUrl}}/users/60340db80aee1f156d1def07
 Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "isAdmin": 0
+    "username": "user123"
 }
 
 ### 
@@ -120,5 +121,5 @@ Authorization: Bearer {{accessToken}}
 ### 
 
 # @name deleteUserID
-DELETE {{baseUrl}}/users/603400751f9551b6966e40c1
+DELETE {{baseUrl}}/users/60340db80aee1f156d1def07
 Authorization: Bearer {{accessToken}}
