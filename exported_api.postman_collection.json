@@ -1,0 +1,467 @@
+{
+	"info": {
+		"_postman_id": "5e1b25e0-3113-4aaa-b899-8d5b9074af03",
+		"name": "simple user api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);",
+									"postman.setEnvironmentVariable(\"refreshToken\", jsonData.refreshToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"user_123\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/users/auth/login",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"users",
+								"auth",
+								"login"
+							]
+						},
+						"description": "will return **accessToken** and **refreshToken**"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\": \"password\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/users/auth/register",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"users",
+								"auth",
+								"register"
+							]
+						},
+						"description": "_username_ and _password_ is required to register\n\ncannot have duplicate _username_"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"accessToken\", jsonData.accessToken);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\" : \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/users/auth/refresh-token",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"users",
+								"auth",
+								"refresh-token"
+							]
+						},
+						"description": "endpoint for refreshing **accessToken**\n\nif return _jwt expired_ than user need to re-login"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\" : \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}/users/auth/logout",
+							"host": [
+								"{{auth_base_url}}"
+							],
+							"path": [
+								"users",
+								"auth",
+								"logout"
+							]
+						},
+						"description": "invalidate the user **accessToken** and **refreshToken**"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_base_url}}/users/",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						},
+						"description": "get the currently login user info"
+					},
+					"response": []
+				},
+				{
+					"name": "User Info All",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_base_url}}/users/all",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								"all"
+							]
+						},
+						"description": "get all user info from db\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "User Info By Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{user_base_url}}/users/:id",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6035092fd21b790020d3a72d"
+								}
+							]
+						},
+						"description": "get specific user info by id\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"user_123\",\n    \"password\": \"password\",\n    \"isAdmin\": false\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						},
+						"description": "create a new user\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						},
+						"description": "update currently login user info\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User By Id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/:id",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6035092fd21b790020d3a72d"
+								}
+							]
+						},
+						"description": "update user info by id\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						},
+						"description": "delete currently login user\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User All",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/all",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								"all"
+							]
+						},
+						"description": "delete all user\n\nonly accessible to **admin**"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{user_base_url}}/users/:id",
+							"host": [
+								"{{user_base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6034f3d8ec55b6153f4af303"
+								}
+							]
+						},
+						"description": "delete user by id\n\nonly accessible to **admin**"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "user_base_url",
+			"value": "http://192.168.1.105:32148"
+		},
+		{
+			"key": "auth_base_url",
+			"value": "http://192.168.1.105:32033"
+		}
+	]
+}
