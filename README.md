@@ -19,7 +19,7 @@
 A user simple API build using **[expressJS](https://expressjs.com/)** framework with **[MongoDB](https://www.mongodb.com/)**.
 Can support **[Docker](https://www.docker.com/) containerization** and **[Kubernetes](https://kubernetes.io/)**.
 
-There is two module for this API
+There is two module for this API:
 
 - [AuthNode](https://github.com/a-johanes/sejutacita_technical_test/tree/master/AuthNode), contains API for user authentication,
 
@@ -46,9 +46,10 @@ DELETE .../users/:id
 
 The user authentication is implemented using **[JWT](https://jwt.io/)** and **refresh token** mechanism
 
-The API request examples can be seen at [doc](https://documenter.getpostman.com/view/9394904/TWDZJGS6)
+The API request examples can be seen at [doc](https://documenter.getpostman.com/view/9394904/TWDZJGS6).
+The exported `Postman` documentation can also be downloaded from [exported_api.postman_collection.json](https://github.com/a-johanes/sejutacita_technical_test/blob/master/exported_api.postman_collection.json).
 
-The exported `Postman` documentation can also be downloaded from [exported_api.postman_collection.json](https://github.com/a-johanes/sejutacita_technical_test/blob/master/exported_api.postman_collection.json)
+The app were made this way so it can be scale independently. E.g. we can have two user node and one auth node. Just change the replication from 1 to 2 for the user node.
 
 ## System Requirements
 
@@ -249,4 +250,12 @@ $ microk8s.kubectl get node -o wide
 
 ![](./media/internal_ip.png)
 
-8. Now you can access the node using the internal ip and port, e.g. `192.168.1.105:32033`. You can try it with [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for vscode using the `rest.http` file or use the postman and change the collection variables.
+8. Now you can access the node using the internal ip and port, e.g. `192.168.1.105:32033`. You can try it with [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) for vscode using the `rest.http` file or use the Postman and change the collection variables.
+
+## Future Improvement
+
+- Handle pagination on get all user info route
+- Handle refresh for refresh token
+- Make user node communicate with auth node for authentication
+- Change response format for better REST API format. E.g. adding HATEOAS
+- Change the current Kubernetes script to deployment script
